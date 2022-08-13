@@ -6,11 +6,16 @@ const SeeAllUsers = (props) => {
     return (
         <Row>
             
-                <h1 className='userTitle' text style={{textAlign: 'center'}} >All Users</h1>
+                <h3 className='userTitle' style={{backgroundColor:"#012169", textAlign:"center", color:"white",padding:"10px"}} >All Users</h3>
          
                 {props.userData.map((item, index) => {
-                    return <Contact userData={item } key={index} />
-
+                    return <Contact
+                        userData={item}
+                        key={item.id}
+                        deleteUser={props.deleteUser}
+                        editUser={props.editUser}
+                    />
+                        
                 }
                 )}
             

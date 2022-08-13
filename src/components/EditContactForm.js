@@ -2,23 +2,26 @@ import React from "react";
 import { Form, Button } from "react-bootstrap"
 import { useState } from "react";
 
-const AddUsers = (props) => {
-    const [name, setName] = useState("")
-    const [contact, setContact] = useState("")
-    const [location, setLocation] = useState("")
+const EditContactForm = (props) => {
+    const [name, setName] = useState(props.userData.name)
+    const [contact, setContact] = useState(props.userData.contact)
+    const [location, setLocation] = useState(props.userData.location)
 
     const handleChange = (e) => {
         setContact(e.target.value);
-        console.log(contact)
     };
-     const handleSubmit = (e) => {
+     const handleEdit = (e) => {
          e.preventDefault()
-         props.addUser({name, contact, location})
+         props.editUser(props.userData.id, { name, contact, location });
+
+         setName("");
+         setContact("");
+         setLocation("");
+         props.hide()
      }
    return (
         
-       <Form><h3 style={{backgroundColor:"#012169", textAlign:"center", color:"white",padding:"10px"}}>Add New Users Here</h3>
-            
+           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Name</Form.Label>
                <Form.Control type="text" placeholder="Name" value={name}
@@ -42,12 +45,12 @@ const AddUsers = (props) => {
                }} />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={handleSubmit}>
-                Add User
+            <Button variant="primary" type="submit" onClick={handleEdit}>
+                Save
             </Button>
          </Form>    
         
     );
 }
 
-export default AddUsers;
+export default EditContactForm;
