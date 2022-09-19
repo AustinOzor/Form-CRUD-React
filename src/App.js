@@ -23,10 +23,11 @@ function App() {
 
   }
   const deleteUser = (id) => {
-    setUser(users.filter((user) => {
+    setUser(users.filter((user)=> {
       if (user.id !== id) {
-        return user
+        return deleteUser
       }
+      return user
     }));
   };
   const editUser = (id, updatedInfo) => {
@@ -38,19 +39,20 @@ function App() {
     }))
   };
   return (
-    <Container fluid style={{fontFamily:"Times New Roman"}}>
-      <Row style={{ marginTop: '1rem' }}>
-        
-        <Col md={4}>
-          <AddUsers addUser={addNewUser} />
-        </Col>
-
-        <Col md={8}>
-          <ContactsForm userData={users} deleteUser={deleteUser} editUser={editUser} />
-        </Col>
-      </Row>
-   </Container>
+    
+      <Container fluid style={{fontFamily:"Times New Roman"}}>
+        <Row style={{ marginTop: '1rem' }}>
+      
+          <Col md={4}>
+            <AddUsers addUser={addNewUser} />
+          </Col>
+          <Col md={8}>
+            <ContactsForm userData={users} deleteUser={deleteUser} editUser={editUser} />
+          </Col>
+        </Row>
+         </Container>
+    
   )
 }
 
-export default App;
+export default App; 
