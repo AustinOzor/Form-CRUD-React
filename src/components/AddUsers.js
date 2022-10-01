@@ -1,7 +1,9 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap"
 import { useState } from "react";
-
+import { reduxNewUser } from "../Actions/UsersActions";
+import { connect } from "react-redux"
+import { v4 as uuid } from 'uuid';
 const AddUsers = (props) => {
     const [name, setName] = useState("")
     const [contact, setContact] = useState("")
@@ -13,7 +15,8 @@ const AddUsers = (props) => {
     };
      const handleSubmit = (e) => {
          e.preventDefault()
-         props.addUser({name, contact, location})
+         props.reduxNewUser({ id: uuid(), name, contact, location })
+         console.log({ id: uuid(), name, contact, location })
      }
    return (
         
@@ -49,5 +52,8 @@ const AddUsers = (props) => {
         
     );
 }
+const mapDispatchToProps = {
+reduxNewUser: reduxNewUser,
+}
 
-export default AddUsers;
+export default connect(null, mapDispatchToProps) (AddUsers);

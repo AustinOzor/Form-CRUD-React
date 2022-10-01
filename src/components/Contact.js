@@ -1,14 +1,20 @@
 import React,{useState} from 'react';
 import { Modal, Button, Card, Col } from 'react-bootstrap';
 import EditContactForm from './EditContactForm';
+import { reduxDeleteUser } from '../Actions/UsersActions';
+import { connect, useDispatch } from "react-redux";
+
 const User = (props) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true); 
+   
+    //   const dispatch = useDispatch()
 
     const handleDelete = (e) => {
         e.preventDefault()
-        props.deleteUser(props.userData.id)
+    //    dispatch(reduxDeleteUser(props.userData.id))
+        props.reduxDeleteUser(props.userData.id)
     }
     return (
         <>
@@ -50,5 +56,7 @@ const User = (props) => {
         </>
     );
 }
-
-export default User;
+const mapDispatchToProps = {
+    reduxDeleteUser: reduxDeleteUser,
+}
+export default connect(null, mapDispatchToProps) (User);

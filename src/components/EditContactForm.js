@@ -1,7 +1,10 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap"
 import { useState } from "react";
-
+import { connect } from "react-redux"
+import { reduxEditUser } from "../Actions/UsersActions";
+    
+    
 const EditContactForm = (props) => {
     const [name, setName] = useState(props.userData.name)
     const [contact, setContact] = useState(props.userData.contact)
@@ -12,7 +15,10 @@ const EditContactForm = (props) => {
     };
      const handleEdit = (e) => {
          e.preventDefault()
-         props.editUser(props.userData.id, { name, contact, location });
+         
+         let newInfo = { id: props.userData.id, name, contact, location, };
+         props.reduxEditUser(newInfo)
+      //   props.editUser(props.userData.id, { name, contact, location });
 
          setName("");
          setContact("");
@@ -52,5 +58,7 @@ const EditContactForm = (props) => {
         
     );
 }
-
-export default EditContactForm;
+const mapStateToProps = {
+    reduxEditUser : reduxEditUser
+}
+export default connect(null, mapStateToProps) (EditContactForm);
