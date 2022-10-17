@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import { Modal, Button, Card, Col } from 'react-bootstrap';
 import EditContactForm from './EditContactForm';
 import { reduxDeleteUser } from '../Actions/UsersActions';
-import { connect, useDispatch } from "react-redux";
+import { connect} from "react-redux";
 
 const User = (props) => {
     const [show, setShow] = useState(false);

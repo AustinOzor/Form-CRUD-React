@@ -12,7 +12,7 @@ const SeeAllUsers = (props) => {
                 style={{
                     backgroundColor: "#012169", textAlign: "center",
                     color: "white", padding: "10px"
-                }} >All Users</h3>
+                }} >All Contact</h3>
          
                 {props.users.map((item, index) => {
                     return <Contact

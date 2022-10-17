@@ -4,6 +4,8 @@ import { useState } from "react";
 import { reduxNewUser } from "../Actions/UsersActions";
 import { connect } from "react-redux"
 import { v4 as uuid } from 'uuid';
+import {db} from "../firebase/config"
+import {doc, setDoc} from "firebase/firestore"
 const AddUsers = (props) => {
     const [name, setName] = useState("")
     const [contact, setContact] = useState("")
@@ -13,14 +15,26 @@ const AddUsers = (props) => {
         setContact(e.target.value);
         console.log(contact)
     };
-     const handleSubmit = (e) => {
-         e.preventDefault()
-         props.reduxNewUser({ id: uuid(), name, contact, location })
-         console.log({ id: uuid(), name, contact, location })
-     }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        //props.newUser({name, contact, location})
+        //props.reduxNewUser({name,contact,location})
+        // props.reduxNewUser({ id: uuid(), name, contact, location })
+        let newUser = { id: uuid(), name, contact, location }
+        try { await setDoc(doc(db, "userContacts", newUser.id), newUser); }
+        catch(e){console.log(e)
+    }
+        
+        //     const docRef = await addDoc(collection(db, "contacts"), {
+        //       id: uuid(), name, contact, location
+        //   });
+        setName("")
+        setContact("")
+        setLocation("")
+    };
    return (
         
-       <Form><h3 style={{backgroundColor:"#012169", textAlign:"center", color:"white",padding:"10px"}}>Add New Users Here</h3>
+       <Form><h3 style={{backgroundColor:"#012169", textAlign:"center", color:"white",padding:"10px"}}>Add New Contact Here</h3>
             
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Name</Form.Label>
@@ -33,7 +47,8 @@ const AddUsers = (props) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Contact</Form.Label>
-                <Form.Control type="number" placeholder="Contact" value={contact} onChange={handleChange} />
+               <Form.Control type="number" placeholder="Contact"
+                   value={contact} onChange={handleChange} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
