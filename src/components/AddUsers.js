@@ -5,7 +5,7 @@ import { reduxNewUser } from "../Actions/UsersActions";
 import { connect } from "react-redux"
 import { v4 as uuid } from 'uuid';
 import {db} from "../firebase/config"
-import {doc, setDoc} from "firebase/firestore"
+import {doc, serverTimestamp, setDoc} from "firebase/firestore"
 const AddUsers = (props) => {
     const [name, setName] = useState("")
     const [contact, setContact] = useState("")
@@ -20,8 +20,11 @@ const AddUsers = (props) => {
         //props.newUser({name, contact, location})
         //props.reduxNewUser({name,contact,location})
         // props.reduxNewUser({ id: uuid(), name, contact, location })
-        let newUser = { id: uuid(), name, contact, location }
-        try { await setDoc(doc(db, "userContacts", newUser.id), newUser); }
+        let newUser = {
+            id: uuid(), name, contact, location,
+            timestamp: serverTimestamp()
+        }
+        try { await setDoc(doc(db, "userDetails", newUser.id), newUser); }
         catch(e){console.log(e)
     }
         

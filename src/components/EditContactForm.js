@@ -3,8 +3,9 @@ import { Form, Button } from "react-bootstrap"
 import { useState } from "react";
 import { connect } from "react-redux"
 import { reduxEditUser } from "../Actions/UsersActions";
-    
-    
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from '../firebase/config';
+
 const EditContactForm = (props) => {
     const [name, setName] = useState(props.userData.name)
     const [contact, setContact] = useState(props.userData.contact)
@@ -13,11 +14,14 @@ const EditContactForm = (props) => {
     const handleChange = (e) => {
         setContact(e.target.value);
     };
-     const handleEdit = (e) => {
+     const handleEdit = async (e) => {
          e.preventDefault()
+        let newInfo = { id: props.userData.id, name, contact, location, };
+         const editingUser = doc(db, "userDetails", props.userData.id);
+
+            await updateDoc(editingUser, newInfo);
          
-         let newInfo = { id: props.userData.id, name, contact, location, };
-         props.reduxEditUser(newInfo)
+        //  props.reduxEditUser(newInfo)
       //   props.editUser(props.userData.id, { name, contact, location });
 
          setName("");

@@ -3,6 +3,8 @@ import { Modal, Button, Card, Col } from 'react-bootstrap';
 import EditContactForm from './EditContactForm';
 import { reduxDeleteUser } from '../Actions/UsersActions';
 import { connect} from "react-redux";
+import { doc, deleteDoc } from "firebase/firestore"
+import {db} from '../firebase/config';
 
 const User = (props) => {
     const [show, setShow] = useState(false);
@@ -11,10 +13,12 @@ const User = (props) => {
    
     //   const dispatch = useDispatch()
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault()
     //    dispatch(reduxDeleteUser(props.userData.id))
-        props.reduxDeleteUser(props.userData.id)
+        // props.reduxDeleteUser(props.userData.id)
+        try{await deleteDoc(doc(db, "userDetails", props.userData.id));
+        }catch(e){console.log(e)}
     }
     return (
         <>

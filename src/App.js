@@ -3,28 +3,44 @@ import { Container, Row, Col,  } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ContactsForm from "./components/ContactsForm";
 import AddUsers from "./components/AddUsers";
-import { collection, query,  onSnapshot } from "firebase/firestore";
+import { collection, query,  onSnapshot, orderBy} from "firebase/firestore";
 import { db } from "./firebase/config"
 import { reduxNewUser } from "./Actions/UsersActions"
 import { useDispatch } from "react-redux"
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const readData = async () => {
-      const q = query(collection(db, "userContacts"),);
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const contacts = [];
-        querySnapshot.forEach((doc) => {
-          contacts.push(doc.data());
-        });
-        dispatch(reduxNewUser(contacts))
-        console.log(contacts);
+     const q = query(collection(db, "userDetails"), orderBy("timestamp","asc"));
+     onSnapshot(q, (querySnapshot) => {
+      const contacts = [];
+      querySnapshot.forEach((doc) => {
+      contacts.push(doc.data());
       });
-    };
+       dispatch(reduxNewUser(contacts))
+  console.log(contacts);
+});
+
+    }
     readData()
   },[])
-  // const [users, setUser] = useState([
+  // useEffect(() => {
+  //   const readData = async () => {
+  //     const q = query(collection(db, "userContacts"), orderBy("name", "asc"));
+  //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //       const contacts = [];
+  //       querySnapshot.forEach((doc) => {
+  //         contacts.push(doc.data());
+  //       });
+  //       dispatch(reduxNewUser(contacts))
+  //       console.log(contacts);
+  //     });
+  //   };
+  //   readData()
+  // },[])
+  // // const [users, setUser] = useState([
   //   // {id:'1',
   //   // name: "David Andy", contact:"+11656366656", location: "San Diago"
   //   // },
