@@ -3,16 +3,13 @@ import Contact from './Contact';
 import { Row,  } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-
 const SeeAllUsers = (props) => {
+
+    
     return (
         <Row>
             
-            <h3 className='userTitle'
-                style={{
-                    backgroundColor: "#012169", textAlign: "center",
-                    color: "white", padding: "10px"
-                }} >All Contact</h3>
+            <h3 style={{backgroundColor:"#012169", textAlign:"center", color:"white",padding:"10px"}}>All Contact</h3>
          
                 {props.users.map((item, index) => {
                     return <Contact
@@ -21,19 +18,14 @@ const SeeAllUsers = (props) => {
                         deleteUser={props.deleteUser}
                         editUser={props.editUser}
                     />
-                        
-                }
-                )}
-            
-           
-        </Row>
+                })}
+       </Row>
     );
 }
 
-
 const mapStateToProps = (state) => {
     return {
-     users:state.users   
+     users: state.userReducer.users   
     }
 }
 export default connect(mapStateToProps) (SeeAllUsers);

@@ -1,6 +1,24 @@
-import {createStore } from 'redux'
+import {createStore, combineReducers} from 'redux'
+import authReducer from "../reducer/AuthReducer";
 import userReducer from "../reducer/UsersReducer"
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' 
 
-let store = createStore(userReducer)
+const persistConfig = {
+    key: 'root',
+    storage,
+};
 
-export default store;
+
+let reducers = combineReducers({
+    userReducer: userReducer,
+    authReducer : authReducer
+})
+
+const persistedReducer = persistReducer(persistConfig, reducers)
+let Store = createStore(persistedReducer)
+  let persistor = persistStore(Store)
+  
+
+
+export {Store, persistor} ;

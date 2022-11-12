@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col,  } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ContactsForm from "./components/ContactsForm";
-import AddUsers from "./components/AddUsers";
 import { collection, query,  onSnapshot, orderBy} from "firebase/firestore";
-import { db } from "./firebase/config"
+import { db, auth } from "./firebase/config"
 import { reduxNewUser } from "./Actions/UsersActions"
-import { useDispatch } from "react-redux"
+import { newLogin } from "./Actions/AuthAction"
+import { useDispatch, connect } from "react-redux"
+import Routing from "./Routing";
+import { onAuthStateChanged } from "firebase/auth";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -25,7 +26,20 @@ function App() {
 
     }
     readData()
-  },[])
+  })
+
+  useEffect (()=>{
+    onAuthStateChanged(auth, (user) => {
+    if(user)dispatch(newLogin(user))
+    
+    else {
+      dispatch(newLogin(null))
+    }
+      //this is for connect
+      // if (user)props.newLogin(user)
+      // else props.newLogin(null)
+          })
+  })
   // useEffect(() => {
   //   const readData = async () => {
   //     const q = query(collection(db, "userContacts"), orderBy("name", "asc"));
@@ -75,25 +89,14 @@ function App() {
   // };
   return (
     
-      <Container fluid style={{fontFamily:"Times New Roman"}}>
-        <Row style={{ marginTop: '1rem' }}>
-      
-          <Col md={4}>
-          {<AddUsers
-            // addUser={addNewUser}
-          />}
-          </Col>
-          <Col md={8}>
-          <ContactsForm
-            // userData={users}
-            // deleteUser={deleteUser}
-            // editUser={editUser}
-          />
-          </Col>
-        </Row>
-         </Container>
     
-  )
+        
+      <Routing />
+    
+    
+  );
 }
-
-export default App; 
+const mapDispatchToProps = {
+  newLogin: newLogin
+}
+export default connect(null, mapDispatchToProps)(App); 
